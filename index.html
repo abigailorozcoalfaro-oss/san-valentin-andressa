@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para Andrés 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+ margin:0;
+ font-family:'Segoe UI',sans-serif;
+ background:#0b141a;
+ color:white;
+ overflow-x:hidden;
+}
+.screen{display:none;min-height:100vh;padding:25px;}
+.active{display:block;}
+.center{text-align:center}
+
+button{
+ padding:15px 28px;
+ margin:12px;
+ border:none;
+ border-radius:30px;
+ background:#ff4d6d;
+ color:white;
+ font-size:16px;
+}
+
+.alt{background:#444}
+
+.chatbox{
+ background:#111b21;
+ border-radius:15px;
+ padding:15px;
+ max-width:90%;
+ margin:0 auto;
+}
+
+.msg{
+ background:#005c4b;
+ padding:12px 16px;
+ border-radius:18px;
+ margin:10px 0;
+ max-width:80%;
+ animation:fade .4s;
+}
+
+.time{
+ font-size:11px;
+ opacity:.6;
+ text-align:right;
+}
+
+.typing{
+ font-style:italic;
+ opacity:.6;
+}
+
+img{
+ width:100%;
+ border-radius:20px;
+ margin-top:18px;
+}
+
+.letter{
+ max-width:700px;
+ margin:0 auto;
+ line-height:1.8;
+ font-size:17px;
+ animation:fade 1s;
+}
+
+.heart{
+ position:fixed;
+ bottom:-10px;
+ animation:float 6s linear infinite;
+}
+
+@keyframes float{
+ from{transform:translateY(0);opacity:1}
+ to{transform:translateY(-100vh);opacity:0}
+}
+
+@keyframes fade{
+ from{opacity:0;transform:translateY(15px)}
+ to{opacity:1}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+ <source src="cancion.mp3" type="audio/mpeg">
+</audio>
+
+<!-- PANTALLA 1 -->
+<div id="s1" class="screen active center">
+ <h2>Hola Andrés 💖</h2>
+ <p>Esto no es una página</p>
+ <p>es algo que hice con amor</p>
+ <button onclick="start()">Entrar</button>
+</div>
+
+<!-- PANTALLA 2 -->
+<div id="s2" class="screen center">
+ <h3>Nuestro tiempo juntos ⏳</h3>
+ <p id="contador"></p>
+ <button onclick="show('s3')">💬 Leer mensajes</button>
+</div>
+
+<!-- PANTALLA 3 -->
+<div id="s3" class="screen">
+ <div class="chatbox">
+  <div id="chat"></div>
+  <div id="typing" class="typing">escribiendo…</div>
+ </div>
+ <div class="center">
+  <button onclick="show('s4')">📸 Ver recuerdos</button>
+ </div>
+</div>
+
+<!-- PANTALLA 4 -->
+<div id="s4" class="screen center">
+ <img src="foto1.jpg">
+ <img src="foto2.jpg">
+ <img src="foto3.jpg">
+ <img src="foto4.jpg">
+ <img src="foto5.jpg">
+ <button onclick="show('s5')">💌 Leer carta</button>
+</div>
+
+<!-- PANTALLA 5 CARTA -->
+<div id="s5" class="screen center">
+ <h2>Para ti 💌</h2>
+ <div class="letter">
+  <p>
+   Andrés,<br><br>
+   Desde el día en que decidimos caminar juntos, mi vida tomó un rumbo más bonito.
+   Contigo aprendí que el amor no solo se dice, se cuida, se respeta y se elige todos los días.
+  </p>
+  <p>
+   Gracias por tu paciencia, por tu ternura, por protegerme y por hacerme sentir en casa.
+   Gracias por cada risa, cada abrazo y cada momento que se queda conmigo.
+  </p>
+  <p>
+   No sé qué nos depare el futuro, pero sí sé que quiero vivirlo contigo,
+   seguir escribiendo nuestra historia y celebrarnos siempre.
+  </p>
+  <p>
+   Con todo mi amor,<br>
+   Abi 💖
+  </p>
+ </div>
+ <button onclick="show('s6')">💘 Continuar</button>
+</div>
+
+<!-- PANTALLA 6 PROPUESTA -->
+<div id="s6" class="screen center">
+ <h2>Y ahora…</h2>
+ <p>¿Quieres ser mi San Valentín? 💘</p>
+ <button onclick="final()">💖 Sí</button>
+ <button id="noBtn" class="alt">No</button>
+</div>
+
+<script>
+const music=document.getElementById("music");
+const chat=document.getElementById("chat");
+const typing=document.getElementById("typing");
+
+const mensajes=[
+ "Hola mi niño hermoso 💕",
+ "Desde el 16 de junio de 2025 mi vida cambió.",
+ "Gracias por cuidarme y elegirnos.",
+ "Te amo más de lo que puedo explicar."
+];
+
+function start(){
+ music.play();
+ show('s2');
+ hearts();
+ typeMsg(0);
+}
+
+function show(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+}
+
+function typeMsg(i){
+ if(i>=mensajes.length){
+   typing.style.display="none";
+   return;
+ }
+ let div=document.createElement("div");
+ div.className="msg";
+ chat.appendChild(div);
+ let j=0;
+ let interval=setInterval(()=>{
+   div.innerText+=mensajes[i][j];
+   j++;
+   if(j>=mensajes[i].length){
+     clearInterval(interval);
+     let t=document.createElement("div");
+     t.className="time";
+     t.innerText="✔✔";
+     div.appendChild(t);
+     typeMsg(i+1);
+   }
+ },45);
+}
+
+const inicio=new Date("2025-06-16T00:00:00");
+setInterval(()=>{
+ const now=new Date();
+ const diff=now-inicio;
+ const d=Math.floor(diff/86400000);
+ const h=Math.floor(diff/3600000)%24;
+ const m=Math.floor(diff/60000)%60;
+ const s=Math.floor(diff/1000)%60;
+ document.getElementById("contador").innerText=
+ `${d} días ${h}h ${m}m ${s}s juntos 💖`;
+},1000);
+
+document.getElementById("noBtn").onmouseover=()=>{
+ const b=document.getElementById("noBtn");
+ b.style.position="absolute";
+ b.style.top=Math.random()*80+"%";
+ b.style.left=Math.random()*80+"%";
+};
+
+function final(){
+ alert("Gracias por decir que sí 💖\nCon amor, Abi.");
+}
+
+function hearts(){
+ setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerText="💖";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+ },900);
+}
+</script>
+
+</body>
+</html>
